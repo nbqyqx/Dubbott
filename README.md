@@ -1,8 +1,8 @@
 # Dubbott
 * [Build dubbox](/README.md#build-dubbox)
-* Install zookeeper as the service registry
-* Build dubbott
-* Debug the junit test. Import to eclipse first
+* [Install zookeeper as the service registry](/README.md#install-zookeeper-as-the-service-registry)
+* [Build dubbott](/README.md#build-dubbott)
+* [Debug the junit test. Import to eclipse first](//README.md#debug-the-junit-test.-import-to-eclipse-first)
 
 ## Build dubbox
 ```bash
@@ -58,4 +58,5 @@ $ mvn install -Dmaven.test.skip=true
 ```
 
 ## Debug the junit test. Import to eclipse first
-Dubbott/dubbott-demo/dubbott-demo-provider/src/test/java/com/tops001/dubbott/demo/user/facade/UserRestServiceTest.java uncomment line:42 and debug with line:44 *ClientConfiguration config = WebClient.getConfig(userRestService)*
+Uncomment line:42 and debug with line:44 *ClientConfiguration config = WebClient.getConfig(userRestService)*
+Dubbott/dubbott-demo/dubbott-demo-provider/src/test/java/com/tops001/dubbott/demo/user/facade/UserRestServiceTest.java 
