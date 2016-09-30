@@ -2,7 +2,7 @@
 * [Build dubbox](/README.md#build-dubbox)
 * [Install zookeeper as the service registry](/README.md#install-zookeeper-as-the-service-registry)
 * [Build dubbott](/README.md#build-dubbott)
-* [Debug the junit test. Import to eclipse first](//README.md#debug-the-junit-test.-import-to-eclipse-first)
+* [Debug the junit test. Import to eclipse first](//README.md#debug-the-junit-test-import-to-eclipse-first)
 
 ## Build dubbox
 ```bash
