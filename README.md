@@ -1,5 +1,5 @@
 # Dubbott
-* [Build dubbox](/README.md#Builddubbox)
+* [Build dubbox](/README.md#build-dubbox)
 * Install zookeeper as the service registry
 * Build dubbott
 * Debug the junit test. Import to eclipse first
