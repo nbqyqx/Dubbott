@@ -25,7 +25,6 @@
 	<modules>
 		<module>dubbo-rpc-rest-cxf</module>
 		<module>dubbott-demo</module>
-		<module>dubbott-test</module>
 	</modules>
 
 	<properties>

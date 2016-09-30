@@ -1,7 +1,0 @@
-### 注意点：
-- 因为dubbott是通过接口调用远程服务的，所以构造函数测试没有意义
-- 因为接口里没有办法放private、rotected以及默认权限的资源方法，所以忽略PathWarningService资源测试
-- 因为接口是没有办法注入构造函数的参数的，所以通过set方法来注入默认的参数，但是无法通过dubbott的客户端进行测试。只能使用原生的http报文进行传输，而dubbott的客户端封装的过重导致无法传输http报文数据
-- 接口层面无法测试“@FormParam注解加到类的field上是没有作用的”，所以这里只测了资源方法正常功能
-- cxf不支持将有@FormParam注解的参数放到其他参数后面，否则会抛出ProcessingException异常
-- cxf框架里如果资源方法第一个参数是支持@FormParam注解的，那么将数据通过http报文体传递的时候将无法获得其他参数

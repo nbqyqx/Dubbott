@@ -39,7 +39,7 @@ public class UserRestServiceTest {
         assertNull(proxy.echoService("neal niubi"));
     }
     
-    @Test
+    //@Test
     public void testEcho() throws InterruptedException {
         ClientConfiguration config = WebClient.getConfig(userRestService);
         assertNull(userRestService.echoService("neal niubi"));
