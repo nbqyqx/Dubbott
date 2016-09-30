@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd"
+	default-autowire="byType">
+
+	<!-- <context:annotation-config /> -->
+	<!--扫描注解 -->
+	<context:component-scan base-package="com.tops001.dubbott.test.provider.service"></context:component-scan>
+	
+	<dubbo:application name="dubbott-test-provider-service" owner="foundation" organization="topstech"/>
+
+    <dubbo:registry address="zookeeper://192.168.255.76:2181?backup=192.168.255.77:2181,192.168.255.78:2181"/>
+
+    <!--uncomment this if you want to test dubbo's monitor-->
+    <!-- <dubbo:monitor protocol="registry"/> -->
+
+    <!-- here we demonstrate both annotation-based and xml-based configs -->
+    <dubbo:annotation package="com.tops001.dubbott.test.provider.service" />
+
+    <!-- use the external tomcat or other server with the servlet approach; the port and contextpath must be exactly the same as those in external server -->
+    <dubbo:protocol name="cxfrest" port="18015" contextpath="dubbott-test-provider-service/v1.0" server="servlet"
+    				extension="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider,
+    				org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature,
+    				org.apache.cxf.jaxrs.swagger.Swagger2Feature,
+    				com.tops001.dubbott.test.provider.tool.ApplicationProvider,
+    				com.tops001.dubbott.test.provider.tool.ApplicationCharProvider,
+    				com.tops001.dubbott.test.provider.tool.ApplicationJaxbProvider,
+    				com.tops001.dubbott.test.provider.tool.JaxbContextProvider"/>
+
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.GreetService" ref="greetServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.webcontainer.HelloWorldService" ref="helloWorldServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.webcontainer.MultipartService" ref="multipartServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.webcontainer.WebContainerContextInjectionService" ref="webContainerContextInjectionServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.form.FormParamService" ref="formParamServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.readerwritermatch.ReaderWriterMatchService" ref="readerWriterMatchServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev" timeout="300000"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.header.HeaderParamDefaultService" ref="headerParamDefaultServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.header.HeaderParamExceptionService" ref="headerParamExceptionServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.newcookie.CookieService" ref="cookieServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.query.QueryParamsExceptionService" ref="queryParamsExceptionServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.AutoDecodeParamService" ref="autoDecodeParamServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.CookieParamService" ref="cookieParamServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.DefaultValueService" ref="defaultValueServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.DiffCaptureVariablesParamsService" ref="diffCaptureVariablesParamsServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.EncodingParamService" ref="encodingParamServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.HeaderParamService" ref="headerParamServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.MatrixParamNotSetService" ref="matrixParamNotSetServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.MatrixParamService" ref="matrixParamServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.PathSegmentService" ref="pathSegmentServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.QueryParamNotSetService" ref="queryParamNotSetServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+	<dubbo:service interface="com.tops001.dubbott.test.provider.api.params.QueryParamService" ref="queryParamServiceImpl" protocol="cxfrest" validation="true" version="1.0.0.huyang" group="dev"/>
+
+
+</beans>

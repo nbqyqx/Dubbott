@@ -1,0 +1,8 @@
+### 特别注意
+- dubbott会将非RuntimeException且非Exception的异常直接返回给用户
+- dubbott会将以java以及javax开头包下的异常直接返回给用户
+- dubbott判断异常是否资源方法上申明的异常，如果是则直接返回给用户
+- dubbott判断异常类和接口类属于同一包下则直接返回异常给用户
+- dubbott判断异常是自己框架搞出来的异常则直接返回异常给用户
+- 如果不是上述异常dubbott会将其包装成RPCException返回出去
+- 默认情况下：异常处理的时候会优先选择子类的mapper，然后父类的mapper处理器

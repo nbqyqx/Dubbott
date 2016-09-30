@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <dubbo:application name="demo-consumer" owner="foundation.tops001.com" organization="topstech"/>
+
+    <dubbo:registry address="zookeeper://192.168.255.76:2181?backup=192.168.255.77:2181,192.168.255.78:2181"/>
+
+    <!--dubbo's monitor-->
+    <dubbo:monitor protocol="registry"/>
+    
+
+    <dubbo:reference id="userRestService" interface="com.tops001.dubbott.demo.user.facade.UserRestService" protocol="cxfrest"  version="1.0.4" group="DEV">
+    	<dubbo:parameter key="callback" value="com.tops001.dubbott.demo.user.facade.EchoServiceCallback"></dubbo:parameter>
+    </dubbo:reference>		
+
+    <!-- directly connect to provider to simulate the access to non-dubbo rest services -->
+    <!--<dubbo:reference id="anotherUserRestService" interface="com.alibaba.dubbo.demo.user.facade.AnotherUserRestService" url="rest://localhost:8888/services/"/>-->
+
+
+	<!--  cxf-rest provider/feature扩展定义,以下为可选配置, 若不定义,程序使用默认的provider配置 
+	      com.alibaba.dubbo.rpc.protocol.rest.cxf.RpcContextFilter用于通过httpHeader传送一个额外的信息，如日志跟踪使用此filter传送日志ID
+	-->
+	<!--
+	<bean id="cxfRestClientExtensions" class="com.alibaba.dubbo.rpc.protocol.rest.cxf.CXFRestClientExtensions">
+		<property name="extensions">
+			<util:list>
+				<bean class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider"/>
+				<bean class="com.alibaba.dubbo.rpc.protocol.rest.cxf.RpcContextFilter"/> 
+			</util:list>
+		</property>
+	</bean>
+	-->
+</beans>

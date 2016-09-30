@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ - Copyright 1999-2011 Alibaba Group.
+ -  
+ - Licensed under the Apache License, Version 2.0 (the "License");
+ - you may not use this file except in compliance with the License.
+ - You may obtain a copy of the License at
+ -  
+ -      http://www.apache.org/licenses/LICENSE-2.0
+ -  
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS,
+ - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ - See the License for the specific language governing permissions and
+ - limitations under the License.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="demo-provider" owner="foundation.tops001.com" organization="topstech"/>
+
+    <dubbo:registry address="zookeeper://192.168.255.76:2181?backup=192.168.255.77:2181,192.168.255.78:2181"/>
+
+    <!--dubbo's monitor-->
+    <!-- <dubbo:monitor protocol="registry"/> -->
+
+    <!-- here we demonstrate both annotation-based and xml-based configs -->
+    <dubbo:annotation package="com.alibaba.dubbo.demo.user.facade" />
+
+
+    <!--TODO according to the spring convention, we should use something like keep-alive-->
+    <!-- use netty server -->
+    <!--<dubbo:protocol name="rest" port="8888" keepalive="true" server="netty" iothreads="5" threads="100" contextpath="services"/>-->
+
+    <!-- use tjws server -->
+    <!--<dubbo:protocol name="rest" port="8888" server="tjws" contextpath="services"/>-->
+
+    <!-- use tomcat server -->
+    <!-- <dubbo:protocol name="rest" port="8888" threads="500" contextpath="services" server="tomcat" accepts="500"
+                    extension="com.alibaba.dubbo.demo.extension.TraceInterceptor,
+                    com.alibaba.dubbo.demo.extension.TraceFilter,
+                    com.alibaba.dubbo.demo.extension.ClientTraceFilter,
+                    com.alibaba.dubbo.demo.extension.DynamicTraceBinding,
+                    com.alibaba.dubbo.demo.extension.CustomExceptionMapper,
+                    com.alibaba.dubbo.rpc.protocol.rest.support.LoggingFilter"/> -->
+
+    <!-- use the external tomcat or other server with the servlet approach; the port and contextpath must be exactly the same as those in external server -->
+    <!-- extension="org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature,
+    				org.apache.cxf.jaxrs.swagger.Swagger2Feature,
+    				com.tops001.dubbott.demo.common.RestServerExceptionHandler" -->
+    <!-- com.alibaba.dubbo.rpc.protocol.rest.cxf.RpcContextFilter 用于通过httpHeader传送一个额外的信息，如日志跟踪使用此filter传送日志ID -->
+    <dubbo:protocol name="cxfrest" port="8080" contextpath="dubbott-demo-provider/v1.0" server="servlet"
+    				extension="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider,
+    				org.apache.cxf.jaxrs.validation.JAXRSBeanValidationFeature,
+    				org.apache.cxf.jaxrs.swagger.Swagger2Feature,
+    				com.tops001.dubbott.demo.common.RestServerExceptionHandler"/> 
+				
+
+	<dubbo:service interface="com.tops001.dubbott.demo.user.facade.UserRestService" ref="restService" protocol="cxfrest" version="1.0.4" group="DEV"/>
+	<dubbo:service interface="com.tops001.dubbott.demo.consumer.UserRestConsumerService" ref="restConsumerService" protocol="cxfrest"  timeout="2000" connections="100" version="1.0.4" group="DEV"/>
+	<dubbo:service interface="com.alibaba.dubbo.demo.user.facade.OrderService" ref="orderService"  protocol="cxfrest"  timeout="2000" connections="100"  version="1.0.4" group="DEV"/>
+	<dubbo:service interface="com.tops001.dubbott.demo.beanvalidation.BookStoreWithValidation" ref="bookStore" protocol="cxfrest"  timeout="2000" connections="100" version="1.0.4" group="DEV"/>
+	<dubbo:service interface="com.tops001.dubbott.demo.beanvalidation.BookStoreWithValidationPerRequest" ref="bookStorePerReq" protocol="cxfrest"  timeout="2000" connections="100" version="1.0.4" group="DEV"/>
+	
+
+	<dubbo:reference id="userRestService" interface="com.tops001.dubbott.demo.user.facade.UserRestService" protocol="cxfrest" version="1.0.4" group="DEV"></dubbo:reference>
+    
+    <bean id="restService" class="com.tops001.dubbott.demo.user.facade.UserRestServiceImpl"></bean> 
+    <bean id="restConsumerService" class="com.tops001.dubbott.demo.consumer.UserRestConsumerServiceImpl"></bean> 
+    <bean id="orderService" class="com.alibaba.dubbo.demo.user.facade.OrderServiceImpl">
+    </bean>   
+    <bean id="bookStore" class="com.tops001.dubbott.demo.beanvalidation.BookStoreWithValidationImpl"/>
+    <bean id="bookStorePerReq" class="com.tops001.dubbott.demo.beanvalidation.BookStoreWithValidationPerRequestImpl"/>
+      
+</beans>
